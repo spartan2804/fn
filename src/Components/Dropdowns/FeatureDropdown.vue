@@ -12,7 +12,7 @@ import { watch } from 'vue';
 import { useFeature } from '../../composables/useFeature.js';
 
 const props = defineProps({
-  moduleId: {
+  selectedModuleId: {
     type: [String, Number],
     required: true
   }
@@ -27,7 +27,7 @@ const onSelect = (value) => {
 };
 
 watch(
-  () => props.moduleId,
+  () => props.selectedModuleId,
   (newModuleId) => {
     if (newModuleId) {
       loadFeatures(newModuleId);

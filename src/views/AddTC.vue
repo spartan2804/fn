@@ -5,6 +5,7 @@
       <p>Create and manage test cases for your features</p>
     </div>
 
+    <!-- Selection Panel (Top) -->
     <div class="selection-panel">
       <div class="selection-breadcrumb">
         <span :class="{ active: selectedProduct }">Product</span>
@@ -46,9 +47,26 @@
       </div>
     </div>
 
-    <div v-if="selectedFeature" class="testcase-section">
-      <h2>Manage Test Cases</h2>
-      <TestcaseManager :selected-feature-id="selectedFeature" />
+    <!-- Two-Column Layout -->
+    <div v-if="selectedFeature" class="content-layout">
+      <!-- Left Column: Test Case Viewer -->
+      <div class="left-column">
+        <TestCaseViewer 
+          :selected-feature-id="selectedFeature"
+          @edit="onEditTestCase"
+          @delete="onDeleteTestCase"
+          @view="onViewTestCase"
+          @download="onDownloadTestCase"
+        />
+      </div>
+
+      <!-- Right Column: Add TC Form -->
+      <div class="right-column">
+        <AddTCForm 
+          :selected-feature-id="selectedFeature"
+          @testcase-added="refreshTestCases"
+        />
+      </div>
     </div>
 
     <div v-else class="empty-state">
@@ -68,7 +86,8 @@ import TeamDropdown from '../Components/Dropdowns/TeamDropdown.vue';
 import GroupDropdown from '../Components/Dropdowns/GroupDropdown.vue';
 import ModuleDropdown from '../Components/Dropdowns/ModuleDropdown.vue';
 import FeatureDropdown from '../Components/Dropdowns/FeatureDropdown.vue';
-import TestcaseManager from '../Components/TestcaseManager.vue';
+import TestCaseViewer from '../Components/TestCaseViewer.vue';
+import AddTCForm from '../Components/AddTCForm.vue';
 
 const selectedProduct = ref(null);
 const selectedTeam = ref(null);
@@ -105,111 +124,163 @@ const onModuleSelect = (id) => {
 const onFeatureSelect = (id) => {
   selectedFeature.value = id;
 };
+
+const onEditTestCase = (testcase) => {
+  // Handle edit action
+};
+
+const onDeleteTestCase = (testcaseId) => {
+  // Handle delete action
+};
+
+const onViewTestCase = (testcase) => {
+  // Handle view action
+};
+
+const onDownloadTestCase = (testcase) => {
+  // Handle download action
+};
+
+const refreshTestCases = () => {
+  // Refresh the test cases list
+};
 </script>
 
 <style scoped>
 .add-testcase-container {
-  max-width: 1200px;
-  margin: 0 auto;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   padding: 2rem;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .header {
   text-align: center;
   margin-bottom: 2rem;
+  color: #2c3e50;
 }
 
 .header h1 {
-  color: #2c3e50;
+  font-size: 2.5rem;
   margin-bottom: 0.5rem;
+  background: linear-gradient(120deg, #2c3e50, #3498db);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
 }
 
 .header p {
-  color: #7f8c8d;
+  color: #666;
   font-size: 1.1rem;
 }
 
 .selection-panel {
-  background-color: #f8f9fa;
-  border-radius: 8px;
+  background: white;
+  border-radius: 15px;
   padding: 1.5rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
   margin-bottom: 2rem;
 }
 
 .selection-breadcrumb {
   display: flex;
   align-items: center;
+  gap: 0.5rem;
   margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #e0e0e0;
+  padding: 0.75rem;
+  background: #f8f9fa;
+  border-radius: 10px;
+  overflow-x: auto;
 }
 
 .selection-breadcrumb span {
-  color: #95a5a6;
-  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  color: #666;
+  transition: all 0.3s ease;
 }
 
 .selection-breadcrumb span.active {
-  color: #3498db;
-  font-weight: 600;
+  background: #3498db;
+  color: white;
+  box-shadow: 0 2px 4px rgba(52,152,219,0.2);
 }
 
 .selection-breadcrumb .separator {
-  margin: 0 0.5rem;
-  color: #bdc3c7;
+  color: #ccc;
+  margin: 0 0.25rem;
 }
 
 .dropdown-section {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  padding: 1rem 0;
 }
 
 .dropdown-container {
-  flex: 1;
-  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .dropdown-container label {
-  display: block;
-  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  color: #666;
   font-weight: 500;
-  color: #34495e;
 }
 
-.testcase-section {
-  background-color: white;
+.dropdown-container select {
+  padding: 0.75rem;
+  border: 1px solid #e1e1e1;
   border-radius: 8px;
-  padding: 1.5rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  background: #f8f9fa;
+  font-size: 1rem;
+  color: #2c3e50;
+  transition: all 0.3s ease;
+  cursor: pointer;
 }
 
-.testcase-section h2 {
-  color: #2c3e50;
-  margin-bottom: 1.5rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid #ecf0f1;
+.dropdown-container select:hover {
+  border-color: #3498db;
+  box-shadow: 0 2px 4px rgba(52,152,219,0.1);
+}
+
+.content-layout {
+  display: grid;
+  grid-template-columns: 60% 40%;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+@media (max-width: 1024px) {
+  .content-layout {
+    grid-template-columns: 1fr;
+  }
 }
 
 .empty-state {
   text-align: center;
-  padding: 3rem;
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  color: #7f8c8d;
+  padding: 4rem 2rem;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
 }
 
 .empty-icon {
   font-size: 3rem;
-  margin-bottom: 1rem;
-  color: #bdc3c7;
+  color: #3498db;
+  margin-bottom: 1.5rem;
 }
 
 .empty-state h3 {
-  margin-bottom: 0.5rem;
-  color: #34495e;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.empty-state p {
+  color: #666;
 }
 </style>
 

@@ -1,3 +1,3 @@
 import axios from './axios';
 
-export const fetchModules = () => axios.get('/api/module/fetch-module');
+export const fetchModules = (group_id) => axios.get(`/modules/${group_id}`);

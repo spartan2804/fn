@@ -12,7 +12,7 @@ import { watch } from 'vue';
 import { useModule } from '../../composables/useModule.js';
 
 const props = defineProps({
-  groupId: {
+  selectedGroupId: {
     type: [String, Number],
     required: true
   }
@@ -27,7 +27,7 @@ const onSelect = (value) => {
 };
 
 watch(
-  () => props.groupId,
+  () => props.selectedGroupId,
   (newGroupId) => {
     if (newGroupId) {
       loadModules(newGroupId);

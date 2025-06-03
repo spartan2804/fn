@@ -12,7 +12,7 @@ import { watch } from 'vue';
 import { useGroup } from '../../composables/useGroup.js';
 
 const props = defineProps({
-  teamId: {
+  selectedTeamId: {
     type: [String, Number],
     required: true
   }
@@ -27,7 +27,7 @@ const onSelect = (value) => {
 };
 
 watch(
-  () => props.teamId,
+  () => props.selectedTeamId,
   (newTeamId) => {
     if (newTeamId) {
       loadGroups(newTeamId);
